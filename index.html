@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <!-- PWA -->
+  <meta name="theme-color" content="#16C77A">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Jornada">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
+  <!-- Base reset (same as artifact platform) -->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+    body{margin:0;font-size:14px;background:#F6F8FC}
+    img{max-width:100%}
+    [hidden]{display:none!important}
+  </style>
+
+<title>Minha Jornada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+
+<style>
+:root {
+  --bg: #F6F8FC;
+  --surface: #FFFFFF;
+  --surface-2: #EFF3FA;
+  --surface-3: #E2E9F5;
+  --accent: #16C77A;
+  --accent-dim: #0FA865;
+  --accent-glow: rgba(22,199,122,0.12);
+  --fg: #0B1324;
+  --fg-2: #4A5568;
+  --fg-3: #94A3B8;
+  --border: #E2E8F0;
+  --danger: #EF4444;
+  --r: 16px;
+  --r-sm: 10px;
+  --sh: 0 2px 12px rgba(0,0,0,0.06);
+  --sh-lg: 0 8px 32px rgba(0,0,0,0.10);
+  --t: 260ms cubic-bezier(.4,0,.2,1);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #07101F;
+    --surface: #0D1B2E;
+    --surface-2: #172539;
+    --surface-3: #1E3149;
+    --accent: #36E08A;
+    --accent-dim: #16C77A;
+    --accent-glow: rgba(54,224,138,0.10);
+    --fg: #EFF4FF;
+    --fg-2: #8EA3BF;
+    --fg-3: #4A5E78;
+    --border: #172539;
+    --sh: 0 2px 12px rgba(0,0,0,0.35);
+    --sh-lg: 0 8px 32px rgba(0,0,0,0.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #07101F;
+  --surface: #0D1B2E;
+  --surface-2: #172539;
+  --surface-3: #1E3149;
+  --accent: #36E08A;
+  --accent-dim: #16C77A;
+  --accent-glow: rgba(54,224,138,0.10);
+  --fg: #EFF4FF;
+  --fg-2: #8EA3BF;
+  --fg-3: #4A5E78;
+  --border: #172539;
+  --sh: 0 2px 12px rgba(0,0,0,0.35);
+  --sh-lg: 0 8px 32px rgba(0,0,0,0.45);
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+h1,h2,h3,h4{font-family:'Space Grotesk',system-ui,sans-serif;text-wrap:balance}
+img{max-width:100%}
+
+/* === APP WRAPPER === */
+.app{max-width:480px;margin:0 auto;padding:0 16px;min-height:100%;position:relative}
+
+/* === SCREENS === */
+.screen{display:none}
+.screen.active{display:block;animation:fadeUp 280ms ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* === HOME === */
+.home-header{
+  padding:48px 0 28px;
+  text-align:center;
+  background:linear-gradient(180deg,var(--accent-glow) 0%,transparent 100%);
+  margin:0 -16px;
+  padding-left:16px;
+  padding-right:16px;
+  padding-top:52px;
+}
+.app-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.home-title{font-size:38px;font-weight:700;line-height:1.1;color:var(--fg);margin-bottom:6px}
+.home-subtitle{font-size:15px;color:var(--fg-2);margin-bottom:28px}
+.prog-wrap{max-width:220px;margin:0 auto 8px}
+.prog-track{background:var(--surface-2);border-radius:99px;height:6px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));border-radius:99px;transition:width 700ms cubic-bezier(.4,0,.2,1)}
+.prog-label{font-size:12px;color:var(--fg-3);text-align:center;margin-bottom:0}
+
+/* CTA continue card */
+.cta-continue{
+  background:var(--accent);
+  border-radius:var(--r);
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  cursor:pointer;
+  margin:20px 0 4px;
+  transition:var(--t);
+  -webkit-tap-highlight-color:transparent;
+  box-shadow:0 4px 20px rgba(22,199,122,.35);
+}
+.cta-continue:active{transform:scale(.97)}
+.cta-txt{flex:1}
+.cta-txt .cta-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:3px}
+.cta-txt .cta-name{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:#fff}
+.cta-arrow{font-size:20px;color:#fff;opacity:.85}
+
+.done-banner{
+  background:var(--accent-glow);
+  border:1px solid var(--accent);
+  border-radius:var(--r);
+  padding:14px 18px;
+  margin:18px 0 4px;
+  text-align:center;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  color:var(--accent-dim);
+}
+
+/* === DEVOTIONAL LIST === */
+.devo-list-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin:24px 0 12px}
+.devo-list{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.devo-card{
+  background:var(--surface);
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  padding:16px 18px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  transition:var(--t);
+  box-shadow:var(--sh);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.devo-card:active{transform:scale(.98)}
+.devo-card.locked{opacity:.45;cursor:default;pointer-events:none}
+.devo-card.done{border-color:var(--accent)}
+.devo-card.next{border-color:var(--accent);background:linear-gradient(135deg,var(--surface),var(--accent-glow))}
+.d-num{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--fg-2);
+  flex-shrink:0;
+}
+.devo-card.done .d-num,.devo-card.next .d-num{background:var(--accent);color:#fff}
+.d-info{flex:1;min-width:0}
+.d-title{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--fg);line-height:1.3;margin-bottom:3px}
+.d-meta{font-size:12px;color:var(--fg-3)}
+.d-icon{font-size:18px;flex-shrink:0}
+
+/* Secondary buttons */
+.sec-actions{display:flex;flex-direction:column;gap:10px;margin-bottom:40px}
+.btn-sec{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:14px 18px;
+  font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--fg-2);
+  cursor:pointer;transition:var(--t);
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-sec:active{background:var(--surface-2);transform:scale(.98)}
+
+/* === THEME TOGGLE === */
+.theme-btn{
+  position:fixed;top:16px;right:16px;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface);border:1.5px solid var(--border);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:15px;transition:var(--t);z-index:90;
+  box-shadow:var(--sh);
+  -webkit-tap-highlight-color:transparent;
+}
+.theme-btn:active{transform:scale(.9)}
+
+/* === SCREEN HEADER === */
+.screen-hdr{display:flex;align-items:center;gap:12px;padding:20px 0 20px}
+.screen-hdr-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--fg)}
+.btn-back{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--surface-2);border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--fg-2);font-size:17px;transition:var(--t);
+  flex-shrink:0;-webkit-tap-highlight-color:transparent;
+}
+.btn-back:active{background:var(--surface-3)}
+
+/* === DEVOTIONAL SCREEN === */
+.devo-hdr{display:flex;align-items:center;gap:12px;padding:16px 0 14px}
+.devo-prog{flex:1}
+.devo-prog-lbl{font-size:11px;color:var(--fg-3);margin-bottom:5px;font-weight:500}
+.devo-prog-track{background:var(--surface-2);border-radius:99px;height:4px;overflow:hidden}
+.devo-prog-fill{height:100%;background:var(--accent);border-radius:99px;transition:width 380ms ease}
+
+/* === STEP CONTENT === */
+.step{display:none;padding-bottom:96px}
+.step.active{display:block;animation:fadeUp 240ms ease}
+
+/* Step 0 – Intro */
+.encounter-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--accent-glow);color:var(--accent-dim);
+  border:1px solid rgba(22,199,122,.25);
+  border-radius:99px;padding:5px 14px;
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;
+  letter-spacing:.05em;margin-bottom:18px;
+}
+.step-title{font-size:26px;font-weight:700;line-height:1.2;color:var(--fg);margin-bottom:6px}
+.step-theme{font-size:14px;color:var(--fg-2);margin-bottom:24px}
+
+.ice-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:22px;margin-bottom:16px;box-shadow:var(--sh);
+}
+.card-chip{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.ice-text{font-size:16px;line-height:1.65;color:var(--fg)}
+
+.key-phrase{
+  background:var(--accent-glow);
+  border-left:3px solid var(--accent);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:14px 18px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:16px;font-weight:600;color:var(--fg);
+  line-height:1.45;
+}
+
+/* Step 1 – Palavra */
+.verse-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:22px;margin-bottom:20px;box-shadow:var(--sh);
+}
+.verse-ref{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.verse-text{font-size:18px;font-style:italic;line-height:1.7;color:var(--fg);font-weight:400}
+.word-body{font-size:15px;line-height:1.8;color:var(--fg-2)}
+.word-body p{margin-bottom:14px}
+.word-body p:last-child{margin-bottom:0}
+
+/* Step 2 – Reflexão */
+.reflex-intro{font-size:14px;color:var(--fg-3);line-height:1.65;margin-bottom:18px}
+.reflex-items{display:flex;flex-direction:column;gap:11px}
+.reflex-item{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r-sm);padding:16px 18px;
+  display:flex;gap:13px;align-items:flex-start;box-shadow:var(--sh);
+}
+.reflex-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--accent-glow);color:var(--accent-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;
+  flex-shrink:0;
+}
+.reflex-q{font-size:14px;line-height:1.55;color:var(--fg);margin-bottom:9px}
+.reflex-q-wrap{flex:1;min-width:0}
+.reflex-ta{
+  width:100%;background:var(--surface-2);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:11px 13px;font-family:'Inter',sans-serif;font-size:14px;
+  color:var(--fg);resize:none;transition:border-color var(--t);
+  min-height:76px;line-height:1.6;
+}
+.reflex-ta:focus{outline:none;border-color:var(--accent)}
+.reflex-saved-text{
+  padding:12px 14px;background:var(--surface-2);border-radius:var(--r-sm);
+  font-size:14px;color:var(--fg-2);line-height:1.65;font-style:italic;min-height:48px;
+}
+
+/* Step 3 – Termômetro */
+.thermo-intro{font-size:14px;color:var(--fg-2);line-height:1.65;margin-bottom:22px}
+.readonly-banner{
+  background:var(--surface-2);border-radius:var(--r-sm);
+  padding:12px 16px;margin-bottom:20px;
+  font-size:13px;color:var(--fg-2);line-height:1.5;
+}
+.thermo-list{display:flex;flex-direction:column;gap:18px}
+.thermo-item{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:18px 18px 14px;box-shadow:var(--sh);
+}
+.thermo-area{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.thermo-q{font-size:14px;font-weight:500;color:var(--fg);line-height:1.5;margin-bottom:14px}
+.rating-row{display:flex;gap:7px}
+.rating-btn{
+  flex:1;height:42px;border-radius:var(--r-sm);
+  border:2px solid var(--border);background:transparent;
+  font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:var(--fg-2);
+  cursor:pointer;transition:var(--t);-webkit-tap-highlight-color:transparent;
+}
+.rating-btn:active:not(:disabled){transform:scale(.92)}
+.rating-btn.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+.rating-btn:disabled{cursor:default;opacity:.6}
+.rating-hints{display:flex;justify-content:space-between;margin-top:8px}
+.rating-hint{font-size:10px;color:var(--fg-3)}
+
+/* Step 4 – Resultado */
+.priv-note{
+  background:var(--surface-2);border-radius:var(--r-sm);
+  padding:14px 16px;margin-bottom:22px;
+  font-size:13px;line-height:1.6;color:var(--fg-2);
+}
+.priv-note strong{color:var(--fg)}
+.score-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:26px 22px;margin-bottom:18px;
+  text-align:center;box-shadow:var(--sh-lg);
+}
+.score-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin-bottom:14px}
+.score-num{
+  font-family:'Space Grotesk',sans-serif;font-size:60px;font-weight:700;
+  color:var(--fg);line-height:1;margin-bottom:4px;
+  font-variant-numeric:tabular-nums;
+}
+.score-num .pct{font-size:28px;color:var(--fg-2)}
+.score-band{
+  font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;
+  color:var(--accent);margin-bottom:18px;
+}
+.score-bar-track{background:var(--surface-2);border-radius:99px;height:10px;overflow:hidden;margin-bottom:20px}
+.score-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent-dim),var(--accent));transition:width 900ms cubic-bezier(.4,0,.2,1)}
+.score-msg{font-size:14px;line-height:1.65;color:var(--fg-2);text-align:left}
+.areas-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.areas-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin-bottom:14px}
+.area-row{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+.area-row:last-child{margin-bottom:0}
+.area-nm{font-size:13px;font-weight:500;color:var(--fg);width:108px;flex-shrink:0}
+.area-track{flex:1;background:var(--surface-2);border-radius:99px;height:8px;overflow:hidden}
+.area-fill{height:100%;background:var(--accent);border-radius:99px}
+.area-val{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--fg-2);width:28px;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums}
+.id-note{font-size:12px;color:var(--fg-3);font-style:italic;text-align:center;line-height:1.65;margin-bottom:22px;padding:0 4px}
+.decision-lbl{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--fg);margin-bottom:10px}
+.decision-ta{
+  width:100%;background:var(--surface);
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  padding:14px 15px;font-family:'Inter',sans-serif;font-size:15px;
+  color:var(--fg);resize:none;transition:border-color var(--t);
+  min-height:96px;line-height:1.55;
+}
+.decision-ta:focus{outline:none;border-color:var(--accent)}
+.decision-saved{
+  background:var(--surface-2);border-radius:var(--r-sm);
+  padding:14px 15px;font-size:15px;color:var(--fg-2);
+  line-height:1.6;font-style:italic;min-height:60px;
+}
+
+/* === FIXED STEP NAV === */
+.step-nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+  background:var(--bg);border-top:1px solid var(--border);
+  display:flex;gap:10px;z-index:60;
+}
+.btn-prev{
+  width:44px;height:50px;border-radius:var(--r-sm);
+  background:var(--surface-2);border:none;cursor:pointer;
+  color:var(--fg-2);font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:var(--t);-webkit-tap-highlight-color:transparent;
+}
+.btn-prev:active{background:var(--surface-3)}
+.btn-next{
+  flex:1;height:50px;border-radius:var(--r-sm);
+  background:var(--accent);border:none;cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#fff;
+  transition:var(--t);-webkit-tap-highlight-color:transparent;letter-spacing:.01em;
+}
+.btn-next:active{background:var(--accent-dim);transform:scale(.98)}
+.btn-next:disabled{opacity:.4;cursor:default;transform:none}
+
+/* === EVOLUTION SCREEN === */
+.evo-chart-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:18px;box-shadow:var(--sh)}
+.evo-chart-svg{width:100%;overflow:visible;display:block}
+.evo-rows{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:16px}
+.evo-row{display:flex;align-items:center;padding:13px 18px;gap:14px;border-bottom:1px solid var(--border)}
+.evo-row:last-child{border-bottom:none}
+.evo-dv{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:var(--fg-2);width:74px;flex-shrink:0}
+.evo-track{flex:1;background:var(--surface-2);border-radius:99px;height:8px;overflow:hidden}
+.evo-fill{height:100%;background:var(--accent);border-radius:99px}
+.evo-pct{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--fg);width:40px;text-align:right;font-variant-numeric:tabular-nums}
+.trend-msg{font-size:14px;color:var(--fg-2);line-height:1.7;margin-bottom:20px;padding:0 2px}
+.evo-areas-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:32px}
+
+/* === SETTINGS === */
+.privacy-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px}
+.privacy-row{padding:15px 18px;border-bottom:1px solid var(--border);font-size:14px;color:var(--fg-2);line-height:1.6}
+.privacy-row:last-child{border-bottom:none}
+.privacy-row strong{color:var(--fg)}
+.btn-delete{
+  width:100%;background:transparent;border:2px solid var(--danger);
+  border-radius:var(--r);padding:15px;
+  font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--danger);
+  cursor:pointer;transition:var(--t);-webkit-tap-highlight-color:transparent;margin-bottom:36px;
+}
+.btn-delete:active{background:rgba(239,68,68,.08)}
+
+/* === MODAL === */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;
+  display:flex;align-items:flex-end;animation:fadeOverlay 180ms ease;
+}
+@keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
+.modal-sheet{
+  background:var(--surface);border-radius:20px 20px 0 0;
+  padding:26px 20px calc(26px + env(safe-area-inset-bottom,0px));
+  width:100%;animation:sheetUp 260ms cubic-bezier(.4,0,.2,1);
+}
+@keyframes sheetUp{from{transform:translateY(32px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--fg);margin-bottom:10px}
+.modal-body{font-size:15px;color:var(--fg-2);line-height:1.6;margin-bottom:26px}
+.modal-btns{display:flex;flex-direction:column;gap:10px}
+.btn-danger{
+  background:var(--danger);border:none;border-radius:var(--r);
+  padding:15px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#fff;
+  cursor:pointer;transition:var(--t);-webkit-tap-highlight-color:transparent;
+}
+.btn-danger:active{opacity:.85}
+.btn-cancel{
+  background:var(--surface-2);border:none;border-radius:var(--r);
+  padding:15px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:var(--fg-2);
+  cursor:pointer;transition:var(--t);-webkit-tap-highlight-color:transparent;
+}
+.btn-cancel:active{background:var(--surface-3)}
+
+/* === EMPTY === */
+.empty{text-align:center;padding:44px 20px;color:var(--fg-3);font-size:15px;line-height:1.65}
+</style>
+
+<!-- APP -->
+<div id="app" class="app">
+
+  <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
+
+  <!-- ===== SCREEN: HOME ===== -->
+  <div id="screen-home" class="screen active">
+    <div class="home-header">
+      <div class="app-eyebrow">Jornada Espiritual</div>
+      <h1 class="home-title">Minha<br>Jornada</h1>
+      <p class="home-subtitle">Fortalecendo minha vida com Deus</p>
+      <div class="prog-wrap">
+        <div class="prog-track"><div class="prog-fill" id="h-prog-fill" style="width:0%"></div></div>
+      </div>
+      <p class="prog-label" id="h-prog-lbl">Comece sua jornada</p>
+    </div>
+
+    <div id="h-cta"></div>
+
+    <div class="devo-list-label">Devocionais</div>
+    <div class="devo-list" id="h-devo-list"></div>
+
+    <div class="sec-actions" id="h-sec"></div>
+  </div>
+
+  <!-- ===== SCREEN: DEVOTIONAL ===== -->
+  <div id="screen-devo" class="screen">
+    <div class="devo-hdr">
+      <button class="btn-back" onclick="goHome()">←</button>
+      <div class="devo-prog">
+        <div class="devo-prog-lbl" id="d-prog-lbl">Quebra-gelo · 1 de 5</div>
+        <div class="devo-prog-track"><div class="devo-prog-fill" id="d-prog-fill" style="width:20%"></div></div>
+      </div>
+    </div>
+
+    <div id="step-0" class="step"></div>
+    <div id="step-1" class="step"></div>
+    <div id="step-2" class="step"></div>
+    <div id="step-3" class="step"></div>
+    <div id="step-4" class="step"></div>
+  </div>
+
+  <!-- ===== SCREEN: EVOLUTION ===== -->
+  <div id="screen-evo" class="screen">
+    <div class="screen-hdr">
+      <button class="btn-back" onclick="goHome()">←</button>
+      <h2 class="screen-hdr-title">Minha Evolução</h2>
+    </div>
+    <div id="evo-content"></div>
+  </div>
+
+  <!-- ===== SCREEN: SETTINGS ===== -->
+  <div id="screen-set" class="screen">
+    <div class="screen-hdr">
+      <button class="btn-back" onclick="goHome()">←</button>
+      <h2 class="screen-hdr-title">Privacidade</h2>
+    </div>
+    <div class="privacy-card">
+      <div class="privacy-row"><strong>Seus dados ficam só neste aparelho.</strong><br>Nenhuma resposta é enviada a servidores. Tudo é armazenado localmente e é exclusivamente seu.</div>
+      <div class="privacy-row">O resultado do termômetro não define sua salvação, sua identidade nem o quanto Deus ama você.</div>
+      <div class="privacy-row">O discipulador pode perguntar: <em>"O devocional mostrou alguma área em que você percebe que precisa crescer?"</em> — e você decide o que deseja compartilhar.</div>
+    </div>
+    <button class="btn-delete" onclick="confirmDelete()">Apagar meus dados deste aparelho</button>
+  </div>
+
+  <!-- ===== FIXED STEP NAV ===== -->
+  <div class="step-nav" id="step-nav" hidden>
+    <button class="btn-prev" id="btn-prev" onclick="prevStep()">←</button>
+    <button class="btn-next" id="btn-next" onclick="nextStep()">Próximo →</button>
+  </div>
+
+  <!-- ===== MODAL: DELETE ===== -->
+  <div class="modal-overlay" id="modal-del" hidden>
+    <div class="modal-sheet">
+      <h3 class="modal-title">Apagar dados</h3>
+      <p class="modal-body">Seus resultados serão apagados somente deste aparelho e não poderão ser recuperados.</p>
+      <div class="modal-btns">
+        <button class="btn-danger" onclick="doDelete()">Sim, apagar tudo</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ========== DATA ========== */
+const DEVOS = [
+  {
+    id:1,
+    title:"Quem você está alimentando?",
+    theme:"Carne × Espírito",
+    verseRef:"Gálatas 5:16-17",
+    verseText:"Andai no Espírito e jamais satisfareis à concupiscência da carne. Porque a carne luta contra o Espírito, e o Espírito, contra a carne...",
+    icebreaker:"Se duas pessoas começarem a academia hoje, mas uma treinar cinco vezes por semana e a outra uma vez por mês, quem ficará mais forte?",
+    keyPhrase:"Aquilo que você alimenta tende a ficar mais forte.",
+    word:["Paulo ensina que existe uma luta entre a carne e o Espírito. Isso significa que o cristão também enfrenta desejos, distrações e tentações.",
+          "Se nossa mente recebe horas de estímulos — redes sociais, séries, jogos e outros conteúdos — mas nossa vida com Deus recebe poucos minutos, nossa fé pode enfraquecer.",
+          "A resposta não é apenas \"tentar mais\". É fortalecer o espírito por meio da Palavra, oração, comunhão e escolhas conscientes."],
+    reflection:["O que mais tem enfraquecido sua vida com Deus ultimamente?",
+                "Você sente que sua mente está sendo mais alimentada por Deus ou por distrações?",
+                "Quando percebe que está esfriando, você reage ou deixa passar?",
+                "Qual hábito simples pode mudar nesta semana?"]
+  },
+  {
+    id:2,
+    title:"Meu corpo não é meu inimigo",
+    theme:"Desejo, atração e tentação",
+    verseRef:"Hebreus 4:15",
+    verseText:"Jesus foi tentado em todas as coisas, à nossa semelhança, mas sem pecado.",
+    icebreaker:"Sentir vontade de comer significa que você precisa comer tudo o que vê? Sentir alguma coisa é a mesma coisa que obedecer à sensação?",
+    keyPhrase:"Maturidade espiritual não significa deixar de sentir. Significa aprender a decidir o que fazer com aquilo que sentimos.",
+    word:["Na adolescência e juventude, atração, curiosidade sexual, excitação e mudanças no corpo são naturais.",
+          "O corpo não é nosso inimigo. Sentir desejo não significa automaticamente estar longe de Deus.",
+          "Jesus foi tentado, mas não pecou. Isso nos ajuda a distinguir: desejo, tentação, decisão e comportamento.",
+          "Maturidade espiritual não significa deixar de sentir. Significa aprender a decidir o que fazer com aquilo que sentimos."],
+    reflection:["Você costuma sentir culpa apenas por experimentar desejos naturais?",
+                "Você consegue separar desejo, tentação e decisão?",
+                "Quais situações deixam você mais vulnerável?",
+                "Como você pode cuidar melhor da sua mente sem tratar seu corpo como inimigo?"]
+  },
+  {
+    id:3,
+    title:"Quando o prazer começa a me dominar",
+    theme:"Domínio próprio e liberdade",
+    verseRef:"1 Coríntios 6:12",
+    verseText:"Todas as coisas me são lícitas, mas eu não me deixarei dominar por nenhuma delas.",
+    icebreaker:"Qual é a diferença entre usar alguma coisa e ser controlado por ela?",
+    keyPhrase:"\"Isso está me dominando?\" — Esta é a pergunta cristã madura.",
+    word:["A Bíblia não possui um versículo que mencione diretamente a masturbação. Por isso, o tema deve ser tratado a partir de princípios bíblicos como domínio próprio, pensamentos, motivações, aquilo que está controlando a pessoa, santidade, pureza e liberdade.",
+          "A atenção aumenta quando um comportamento se torna compulsivo, interfere no sono, atrapalha estudos, afeta relacionamentos ou funciona como fuga constante de ansiedade, tristeza, solidão ou estresse.",
+          "Pornografia merece tratamento específico porque pode alimentar fantasia, repetição de estímulos, objetificação, isolamento, culpa e ciclos compulsivos.",
+          "A pergunta cristã madura não é somente \"Posso ou não posso?\", mas: \"Isso está me dominando?\" e \"Isso está me aproximando ou afastando da vida que desejo construir com Deus?\""],
+    reflection:["Existe algum comportamento que começou como curiosidade e hoje parece mais difícil de controlar?",
+                "Quais são seus gatilhos? (solidão, ansiedade, tédio, madrugada, celular, redes sociais)",
+                "Depois desse comportamento você sente paz ou percebe que entrou em um ciclo?",
+                "Qual limite prático pode ajudar você a recuperar domínio próprio?"]
+  },
+  {
+    id:4,
+    title:"Santidade é liberdade, não prisão",
+    theme:"Pureza, limites e escolhas",
+    verseRef:"1 Tessalonicências 4:3",
+    verseText:"Esta é a vontade de Deus: a vossa santificação.",
+    icebreaker:"Quando ouvimos a palavra \"santidade\", pensamos primeiro em liberdade ou em proibição?",
+    keyPhrase:"Limites não são punição — são estruturas que protegem aquilo que valorizamos.",
+    word:["Santidade não significa viver com medo do corpo ou das emoções.",
+          "Santidade significa separar nossa vida para Deus e aprender a colocar desejos no lugar certo.",
+          "O fruto do Espírito inclui domínio próprio. Isso mostra que maturidade não é ausência de vontade. É capacidade crescente de escolher aquilo que edifica.",
+          "Limites não precisam ser vistos como punição. Muitas vezes são estruturas que protegem aquilo que valorizamos."],
+    reflection:["Você enxerga santidade como relacionamento com Deus ou apenas como lista de proibições?",
+                "Qual limite você sabe que precisa estabelecer?",
+                "Existe alguma área em que você está tentando manter aparência em vez de buscar transformação?",
+                "O que liberdade em Cristo significaria nessa área?"]
+  },
+  {
+    id:5,
+    title:"Como voltar quando eu esfriei",
+    theme:"Graça, restauração e recomeço",
+    verseRef:"Apocalipse 2:4-5",
+    verseText:"Tenho contra ti que abandonaste o teu primeiro amor. Lembra, pois, de onde caíste, arrepende-te e volta às primeiras obras...",
+    icebreaker:"Quando o celular chega a 5% de bateria, você joga fora ou procura uma fonte de energia?",
+    keyPhrase:"Recomeçar pode começar com passos pequenos e sinceros.",
+    word:["Esfriamento espiritual normalmente acontece aos poucos. A oração diminui. A Palavra perde espaço. A comunhão enfraquece. Outras coisas começam a ocupar o centro.",
+          "Jesus chama a lembrar de onde caiu, arrepender-se e voltar às primeiras obras.",
+          "Esfriamento espiritual não precisa ser ponto final.",
+          "Arrependimento não é apenas sentir culpa. É: reconhecer, mudar direção e voltar para Deus. Recomeçar pode começar com passos pequenos e sinceros."],
+    reflection:["Quando você percebeu que começou a esfriar?",
+                "O que você deixou de fazer que antes fortalecia sua fé?",
+                "Existe culpa impedindo você de voltar para Deus?",
+                "Qual será seu primeiro passo de retorno?"]
+  }
+];
+
+const THERMO = [
+  {area:"Tempo com Deus",    q:"Como está meu tempo com Deus?"},
+  {area:"Palavra",           q:"Como está minha relação com a Palavra?"},
+  {area:"Oração",            q:"Como está minha vida de oração?"},
+  {area:"Domínio próprio",   q:"Tenho conseguido exercer domínio próprio sobre meus impulsos e desejos?"},
+  {area:"Santidade",         q:"Quando percebo que algo está me afastando de Deus, tenho reagido e buscado mudança?"},
+  {area:"Comunhão",          q:"Como está minha vontade de estar perto de Deus e de pessoas que fortalecem minha fé?"}
+];
+
+const BANDS = [
+  {max:40, label:"Precisa de cuidado",  msg:"Há sinais de enfraquecimento espiritual. Isso não é condenação. É um convite para parar, identificar o que está roubando sua força e recomeçar com passos simples."},
+  {max:60, label:"Oscilando",           msg:"Sua caminhada parece estar oscilando. Há desejo de crescer, mas algumas áreas precisam de atenção e constância."},
+  {max:80, label:"Em fortalecimento",   msg:"Há bons sinais de crescimento. Continue fortalecendo seu espírito e observe as áreas que ainda estão vulneráveis."},
+  {max:100,label:"Aquecido",            msg:"Você demonstra bons sinais de busca e constância. Continue crescendo com humildade, vigilância e dependência de Deus."}
+];
+
+/* ========== STATE ========== */
+let curDevo = 1;
+let curStep = 0;
+let answers  = [0,0,0,0,0,0];
+let reflexAnswers = [];
+let reviewing = false;
+let jData = {devocionais:{}};
+
+/* ========== STORAGE ========== */
+function loadData(){
+  try{const r=localStorage.getItem('minha_jornada');if(r)jData=JSON.parse(r);}
+  catch(e){}
+}
+function saveData(){
+  try{localStorage.setItem('minha_jornada',JSON.stringify(jData));}catch(e){}
+}
+
+/* ========== STATUS ========== */
+function status(id){
+  if(jData.devocionais[id]) return 'done';
+  if(id===1) return 'next';
+  if(jData.devocionais[id-1]) return 'next';
+  return 'locked';
+}
+
+/* ========== SCREEN ROUTING ========== */
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  const nav=document.getElementById('step-nav');
+  nav.hidden = name!=='devo';
+  window.scrollTo(0,0);
+}
+function goHome(){renderHome();showScreen('home');}
+
+/* ========== HOME ========== */
+function renderHome(){
+  const done=Object.keys(jData.devocionais).length;
+  document.getElementById('h-prog-fill').style.width=(done/5*100)+'%';
+  document.getElementById('h-prog-lbl').textContent=
+    done===5?'Jornada concluída! 🎉':
+    done===0?'Comece sua jornada':
+    `${done} de 5 concluído${done>1?'s':''}`;
+
+  // CTA
+  const nextAvail=DEVOS.find(d=>status(d.id)==='next');
+  const allDone=done===5;
+  let ctaHtml='';
+  if(nextAvail&&!allDone){
+    ctaHtml=`<div class="cta-continue" onclick="openDevo(${nextAvail.id})">
+      <div class="cta-txt">
+        <div class="cta-label">Continuar jornada</div>
+        <div class="cta-name">${nextAvail.title}</div>
+      </div>
+      <div class="cta-arrow">→</div>
+    </div>`;
+  } else if(allDone){
+    ctaHtml=`<div class="done-banner">Você completou toda a jornada. Que Deus continue sua obra em você.</div>`;
+  }
+  document.getElementById('h-cta').innerHTML=ctaHtml;
+
+  // List
+  document.getElementById('h-devo-list').innerHTML=DEVOS.map(d=>{
+    const s=status(d.id);
+    const pct=s==='done'?jData.devocionais[d.id].percentage:null;
+    const icon=s==='done'?'✅':s==='next'?'→':'🔒';
+    return `<div class="devo-card ${s}" ${s!=='locked'?`onclick="openDevo(${d.id})"`:''}">
+      <div class="d-num">${s==='done'?'✓':d.id}</div>
+      <div class="d-info">
+        <div class="d-title">${d.title}</div>
+        <div class="d-meta">${pct!==null?pct+'% · ':''}<span>${d.theme}</span></div>
+      </div>
+      <div class="d-icon">${icon}</div>
+    </div>`;
+  }).join('');
+
+  // Secondary
+  let secHtml='';
+  if(done>=2) secHtml+=`<button class="btn-sec" onclick="showEvo()"><span>📈</span> Minha Evolução</button>`;
+  secHtml+=`<button class="btn-sec" onclick="showScreen('set')"><span>🔒</span> Privacidade e dados</button>`;
+  document.getElementById('h-sec').innerHTML=secHtml;
+}
+
+/* ========== OPEN DEVOTIONAL ========== */
+function openDevo(id){
+  curDevo=id;
+  curStep=0;
+  reviewing=status(id)==='done';
+  answers=reviewing?[...jData.devocionais[id].answers]:[0,0,0,0,0,0];
+  reflexAnswers=reviewing?[...(jData.devocionais[id].reflexao||[])]:[];
+  renderStep();
+  showScreen('devo');
+}
+
+/* ========== STEP RENDERING ========== */
+const STEP_NAMES=['Quebra-gelo','A Palavra','Reflexão','Termômetro','Resultado'];
+
+function renderStep(){
+  const dv=DEVOS.find(d=>d.id===curDevo);
+
+  // Progress bar
+  document.getElementById('d-prog-lbl').textContent=`${STEP_NAMES[curStep]} · ${curStep+1} de 5`;
+  document.getElementById('d-prog-fill').style.width=((curStep+1)/5*100)+'%';
+
+  // Show correct step div
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step-'+curStep).classList.add('active');
+
+  // Render content
+  const el=document.getElementById('step-'+curStep);
+  if(curStep===0) renderIntro(el,dv);
+  else if(curStep===1) renderPalavra(el,dv);
+  else if(curStep===2) renderReflexao(el,dv);
+  else if(curStep===3) renderTermometro(el,dv);
+  else if(curStep===4) renderResultado(el,dv);
+
+  updateNav();
+  window.scrollTo(0,0);
+}
+
+function renderIntro(el,dv){
+  el.innerHTML=`
+    <div class="encounter-badge">Encontro ${dv.id}</div>
+    <h2 class="step-title">${dv.title}</h2>
+    <p class="step-theme">${dv.theme}</p>
+    <div class="ice-card">
+      <div class="card-chip">Quebra-gelo</div>
+      <p class="ice-text">${dv.icebreaker}</p>
+    </div>
+    <div class="key-phrase">${dv.keyPhrase}</div>`;
+}
+
+function renderPalavra(el,dv){
+  el.innerHTML=`
+    <h2 class="step-title">A Palavra</h2>
+    <div class="verse-card">
+      <div class="verse-ref">${dv.verseRef}</div>
+      <p class="verse-text">"${dv.verseText}"</p>
+    </div>
+    <div class="word-body">${dv.word.map(p=>`<p>${p}</p>`).join('')}</div>`;
+}
+
+function renderReflexao(el,dv){
+  const ro=reviewing;
+  el.innerHTML=`
+    <h2 class="step-title">Reflexão</h2>
+    <p class="reflex-intro">${ro?'Suas respostas registradas neste encontro.':'Escreva sua resposta abaixo de cada pergunta. Só você verá.'}</p>
+    ${ro?'<div class="readonly-banner">📋 Modo de revisão — respostas já registradas.</div>':''}
+    <div class="reflex-items">
+      ${dv.reflection.map((q,i)=>{
+        const saved=(reflexAnswers[i]||'').trim();
+        return `<div class="reflex-item">
+          <div class="reflex-num">${i+1}</div>
+          <div class="reflex-q-wrap">
+            <p class="reflex-q">${q}</p>
+            ${ro
+              ?`<div class="reflex-saved-text">${saved||'<span style="opacity:.5;font-style:normal">Sem resposta registrada.</span>'}</div>`
+              :`<textarea class="reflex-ta" placeholder="Escreva aqui sua resposta...">${reflexAnswers[i]||''}</textarea>`}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderTermometro(el,dv){
+  const ro=reviewing;
+  el.innerHTML=`
+    <h2 class="step-title">Termômetro Espiritual</h2>
+    <p class="thermo-intro">Avalie honestamente cada área da sua vida espiritual neste momento. Seja sincero — só você verá.</p>
+    ${ro?'<div class="readonly-banner">📋 Você já respondeu este termômetro. Veja abaixo suas respostas anteriores.</div>':''}
+    <div class="thermo-list">
+      ${THERMO.map((t,i)=>`
+        <div class="thermo-item">
+          <div class="thermo-area">${t.area}</div>
+          <div class="thermo-q">${t.q}</div>
+          <div class="rating-row">
+            ${[1,2,3,4,5].map(v=>`
+              <button class="rating-btn${answers[i]===v?' sel':''}"
+                      ${ro?'disabled':''}
+                      data-q="${i}" data-v="${v}"
+                      onclick="setRating(${i},${v})">${v}</button>`).join('')}
+          </div>
+          <div class="rating-hints">
+            <span class="rating-hint">Muito fraco</span>
+            <span class="rating-hint">Forte e constante</span>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderResultado(el,dv){
+  const pct=reviewing?jData.devocionais[curDevo].percentage:calcPct();
+  const band=getBand(pct);
+  const savedDec=reviewing?(jData.devocionais[curDevo].decision||''):'';
+
+  el.innerHTML=`
+    <div class="priv-note"><strong>Este resultado é seu.</strong><br>Você não precisa mostrar sua pontuação para ninguém. O objetivo é ajudá-lo a perceber como está sua caminhada.</div>
+    <div class="score-card">
+      <div class="score-lbl">Sua temperatura neste momento</div>
+      <div class="score-num" id="s-num">0<span class="pct">%</span></div>
+      <div class="score-band">${band.label}</div>
+      <div class="score-bar-track"><div class="score-bar-fill" id="s-bar" style="width:0%"></div></div>
+      <p class="score-msg">${band.msg}</p>
+    </div>
+    <div class="areas-card">
+      <div class="areas-lbl">Todas as áreas</div>
+      ${THERMO.map((t,i)=>`
+        <div class="area-row">
+          <div class="area-nm">${t.area}</div>
+          <div class="area-track"><div class="area-fill" style="width:${answers[i]/5*100}%"></div></div>
+          <div class="area-val">${answers[i]}/5</div>
+        </div>`).join('')}
+    </div>
+    <p class="id-note">Este número representa suas respostas de hoje. Ele não define sua salvação, sua identidade nem o quanto Deus ama você.</p>
+    <div>
+      <div class="decision-lbl">Minha decisão desta semana</div>
+      ${reviewing
+        ?`<div class="decision-saved">${savedDec||'Nenhuma decisão registrada.'}</div>`
+        :`<textarea class="decision-ta" id="dec-ta" placeholder="Escreva aqui uma decisão prática para esta semana...">${savedDec}</textarea>`}
+    </div>`;
+
+  // Animate score in
+  setTimeout(()=>{
+    document.getElementById('s-num').innerHTML=`${pct}<span class="pct">%</span>`;
+    document.getElementById('s-bar').style.width=pct+'%';
+  },80);
+}
+
+/* ========== NAV ========== */
+function updateNav(){
+  const prev=document.getElementById('btn-prev');
+  const next=document.getElementById('btn-next');
+
+  prev.style.visibility = curStep===0?'hidden':'visible';
+
+  if(curStep===4){
+    next.textContent=reviewing?'Voltar ao início':'Salvar e concluir';
+    next.disabled=false;
+  } else if(curStep===3){
+    next.textContent='Ver resultado →';
+    next.disabled=!reviewing && !allAnswered();
+  } else if(curStep===0){
+    next.textContent='Começar →';
+    next.disabled=false;
+  } else {
+    next.textContent='Próximo →';
+    next.disabled=false;
+  }
+}
+
+function prevStep(){
+  if(curStep===2&&!reviewing){
+    reflexAnswers=[];
+    document.querySelectorAll('.reflex-ta').forEach(ta=>reflexAnswers.push(ta.value));
+  }
+  if(curStep>0){curStep--;renderStep();}
+}
+
+function nextStep(){
+  if(curStep===2&&!reviewing){
+    reflexAnswers=[];
+    document.querySelectorAll('.reflex-ta').forEach(ta=>reflexAnswers.push(ta.value));
+  }
+  if(curStep===4){
+    if(!reviewing){
+      const dec=document.getElementById('dec-ta')?.value||'';
+      const total=answers.reduce((a,b)=>a+b,0);
+      const pct=Math.round(total/30*100);
+      jData.devocionais[curDevo]={score:total,percentage:pct,answers:[...answers],decision:dec,reflexao:[...reflexAnswers],completedAt:new Date().toLocaleDateString('pt-BR')};
+      saveData();
+    }
+    goHome();
+    return;
+  }
+  if(curStep<4){curStep++;renderStep();}
+}
+
+/* ========== THERMOMETER ========== */
+function setRating(qi,v){
+  if(reviewing) return;
+  answers[qi]=v;
+  document.querySelectorAll(`.rating-btn[data-q="${qi}"]`).forEach(b=>{
+    b.classList.toggle('sel',parseInt(b.dataset.v)===v);
+  });
+  if(curStep===3) document.getElementById('btn-next').disabled=!allAnswered();
+}
+function allAnswered(){return answers.every(a=>a>0);}
+function calcPct(){return Math.round(answers.reduce((a,b)=>a+b,0)/30*100);}
+function getBand(p){return BANDS.find(b=>p<=b.max)||BANDS[3];}
+
+/* ========== EVOLUTION ========== */
+function showEvo(){renderEvo();showScreen('evo');}
+
+function renderEvo(){
+  const el=document.getElementById('evo-content');
+  const ids=Object.keys(jData.devocionais).map(Number).sort((a,b)=>a-b);
+  if(ids.length<2){el.innerHTML=`<div class="empty">Complete pelo menos 2 devocionais para ver sua evolução.</div>`;return;}
+
+  const pts=ids.map(id=>({id,pct:jData.devocionais[id].percentage,answers:jData.devocionais[id].answers}));
+  const last=pts[pts.length-1].pct,prev=pts[pts.length-2].pct;
+  const trend=last>prev?'Você não começou onde está agora. Sua jornada mostra crescimento. Continue identificando quais hábitos têm ajudado você.'
+    :last<prev?'Sua pontuação diminuiu em relação ao encontro anterior. Isso pode ser um sinal para observar o que mudou na sua rotina, emoções e vida com Deus — sem culpa, mas com sinceridade.'
+    :'Sua pontuação se manteve estável. Continue fortalecendo cada área.';
+
+  // SVG chart
+  const W=280,H=110,pad=22;
+  const n=pts.length;
+  const xStep=n<2?0:(W-pad*2)/(n-1);
+  const coords=pts.map((p,i)=>({
+    x:pad+i*xStep,
+    y:H-14-(p.pct/100)*(H-28),
+    pct:p.pct,
+    id:p.id
+  }));
+  const poly=coords.map(c=>`${c.x},${c.y}`).join(' ');
+
+  // Grid
+  const gridLines=[25,50,75,100].map(v=>{
+    const y=H-14-(v/100)*(H-28);
+    return `<line x1="${pad-4}" y1="${y}" x2="${W-pad+4}" y2="${y}" stroke="var(--border)" stroke-width="1"/>
+            <text x="${pad-7}" y="${y+3}" font-size="9" fill="var(--fg-3)" text-anchor="end">${v}%</text>`;
+  }).join('');
+
+  const svgDots=coords.map(c=>`
+    <circle cx="${c.x}" cy="${c.y}" r="5" fill="var(--accent)" stroke="var(--surface)" stroke-width="2.5"/>
+    <text x="${c.x}" y="${c.y-10}" font-size="10" fill="var(--fg)" text-anchor="middle" font-weight="600">${c.pct}%</text>
+    <text x="${c.x}" y="${H+2}" font-size="9" fill="var(--fg-3)" text-anchor="middle">D${c.id}</text>
+  `).join('');
+
+  const svgHTML=`<svg viewBox="0 0 ${W} ${H+8}" class="evo-chart-svg">
+    ${gridLines}
+    <polyline points="${poly}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${svgDots}
+  </svg>`;
+
+  // Rows
+  const rowsHtml=pts.map(p=>`
+    <div class="evo-row">
+      <div class="evo-dv">Encontro ${p.id}</div>
+      <div class="evo-track"><div class="evo-fill" style="width:${p.pct}%"></div></div>
+      <div class="evo-pct">${p.pct}%</div>
+    </div>`).join('');
+
+  // Area evolution
+  const areaHtml=THERMO.map((t,ti)=>{
+    const vals=ids.map(id=>jData.devocionais[id].answers[ti]);
+    const first=vals[0],latest=vals[vals.length-1];
+    const diff=latest-first;
+    const ind=diff>0?'↑':diff<0?'↓':'→';
+    const col=diff>0?'var(--accent)':diff<0?'var(--danger)':'var(--fg-3)';
+    return `<div class="area-row">
+      <div class="area-nm" style="font-size:13px">${t.area}</div>
+      <div class="area-track"><div class="area-fill" style="width:${latest/5*100}%"></div></div>
+      <div class="area-val" style="color:${col};font-size:13px">${ind} ${latest}/5</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+    <div class="evo-chart-card">
+      <div class="areas-lbl" style="margin-bottom:16px">Evolução geral</div>
+      ${svgHTML}
+    </div>
+    <div class="evo-rows">${rowsHtml}</div>
+    <p class="trend-msg">${trend}</p>
+    <div class="evo-areas-card">
+      <div class="areas-lbl" style="margin-bottom:14px">Evolução por área</div>
+      ${areaHtml}
+    </div>`;
+}
+
+/* ========== THEME ========== */
+function toggleTheme(){
+  const r=document.documentElement;
+  const cur=r.dataset.theme||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  const next=cur==='dark'?'light':'dark';
+  r.dataset.theme=next;
+  document.getElementById('theme-btn').textContent=next==='dark'?'☀️':'🌙';
+  try{localStorage.setItem('mj_theme',next);}catch(e){}
+}
+
+/* ========== MODAL ========== */
+function confirmDelete(){document.getElementById('modal-del').hidden=false;}
+function closeModal(){document.getElementById('modal-del').hidden=true;}
+function doDelete(){
+  try{localStorage.removeItem('minha_jornada');localStorage.removeItem('mj_theme');}catch(e){}
+  jData={devocionais:{}};
+  closeModal();
+  goHome();
+}
+
+/* ========== INIT ========== */
+loadData();
+
+// Restore saved theme
+try{
+  const t=localStorage.getItem('mj_theme');
+  if(t){document.documentElement.dataset.theme=t;document.getElementById('theme-btn').textContent=t==='dark'?'☀️':'🌙';}
+}catch(e){}
+
+renderHome();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('SW registrado'))
+      .catch(e => console.warn('SW erro:', e));
+  });
+}
+</script>
+</body>
+</html>
